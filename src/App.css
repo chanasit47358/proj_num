@@ -1,0 +1,72 @@
+@import '~antd/dist/antd.css';
+
+
+.site-layout-content {
+  min-height: 280px;
+  padding: 24px;
+  background: #fff;
+}
+
+.ant-layout-header .logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.082);
+}
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+
+.ant-layout-header{
+  background-color: #fff;
+}
+
+.mq-editable-field{
+  width:50%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-variant: tabular-nums;
+  list-style: none;
+  -webkit-font-feature-settings: 'tnum';
+  font-feature-settings: 'tnum', "tnum";
+  position: relative;
+  display: inline-block;
+  min-width: 0;
+  padding: 4px 11px;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 1.5715;
+  background-color: #fff;
+  background-image: none;
+  border-radius: 2px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.mq-root-block:empty::before{
+  content: "input f(x)";
+  color: gray;
+  opacity: 50%;
+  font-size: medium;
+}
+.ant-menu{
+  box-shadow: 0px 10px 16px -3px rgba(96,96,96,0.33);
+}
+.input{
+  width: 50%;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+.input input{
+  margin: 0.3em 0;
+  width:50%;
+}
+.show{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
