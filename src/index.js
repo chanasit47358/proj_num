@@ -4,13 +4,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from "react-router-dom"
 import './index.css';
-import Latexprovider from "./latex"
 ReactDOM.render(
   // <React.StrictMode>
   <Router >
-    {/* <Latexprovider> */}
       <App />
-    {/* </Latexprovider> */}
   </Router >
 
   // </React.StrictMode>
