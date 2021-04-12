@@ -3,7 +3,7 @@ import { StaticMathField } from "react-mathquill";
 import { Card } from "antd"
 const AlgebraLatex = require('algebra-latex')
 const math = require('mathjs')
-function Onepoint({ fx, xL }) {
+function Secant({ fx, xL ,xR}) {
     const [cal, setCal] = useState([]);
     useEffect(() => {
         setCal(() => {
@@ -11,6 +11,7 @@ function Onepoint({ fx, xL }) {
             var Er = Infinity;
             var i = 0;
             var xLtemp = Number(xL);
+            var xRtemp = Number(xR);
             var fxL = math.evaluate((new AlgebraLatex().parseLatex(fx).toMath()), { x: xLtemp });
             temp.push({ x: xLtemp, fx: fxL });
             while (i < 10) {
@@ -30,11 +31,11 @@ function Onepoint({ fx, xL }) {
         <react.Fragment>
             {cal.map((v, i, a) => {
                 let temp = fx.replace(/x/g, "x_i");
-                if(i!==0){
+                if(i!=0){
                     var temp1 = fx.replace(/x/g, a[i-1].x);
                 }
 
-                return i === 0 ?
+                return i == 0 ?
                     (<Card title="Initial" bordered={true} key={i}>
                         <p><StaticMathField>{"x_0=" + v.x}</StaticMathField></p>
                     </Card>
@@ -47,4 +48,4 @@ function Onepoint({ fx, xL }) {
         </react.Fragment>
     )
 }
-export default Onepoint;
+export default Secant;

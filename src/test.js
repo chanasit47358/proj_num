@@ -1,7 +1,6 @@
 import Desmos from "desmos";
 import react, { useEffect, useState } from "react"
 import { EditableMathField } from "react-mathquill";
-import { useLatexContext } from "./latex"
 import { Input } from 'antd'
 import React from "react";
 const AlgebraLatex = require('algebra-latex')
@@ -9,7 +8,6 @@ const math = require('mathjs')
 // const elt =document.getElementById('calculator');
 // var calculator = Desmos.GraphingCalculator(elt,{keypad:false,expressions:false});
 export default function Test({ children, input }) {
-  // const {latex, setLatex} = useLatexContext();
   const [latex, setLatex] = useState('');
   const [xL, setxL] = useState('');
   const [xR, setxR] = useState('');
@@ -17,15 +15,16 @@ export default function Test({ children, input }) {
   const [errtext, setErrtext] = useState(false);
   useEffect(() => {
     console.log(latex);
-    if(input == 1){
+    
+    if(input === 1){
       const elt = document.getElementById('calculator');
-      const calculator = Desmos.GraphingCalculator(elt, { keypad: false, expressions: false });
+      const calculator = Desmos.GraphingCalculator(elt, { keypad: false, expressions: false,settingsMenu:false,backgroundColor: "#e8e8e8",textColor:"#00334e",border:false});
       calculator.setExpression({ id: '1', latex: latex });
       calculator.setExpression({ id: '2', latex: `x=${xL}`, lineStyle: Desmos.Styles.DASHED });
       try {
         (new AlgebraLatex().parseLatex(latex).toMath())
         math.evaluate((new AlgebraLatex().parseLatex(latex).toMath()), { x: 1 });
-        if (latex.search("x") != -1) {
+        if (latex.search("x") !== -1) {
           Number.isFinite(parseFloat(math.evaluate((new AlgebraLatex().parseLatex(latex).toMath()), { x: 1 }))) ? setErrtext(true) : setErrtext(false)
         } else {
           setErrtext(false)
@@ -35,21 +34,23 @@ export default function Test({ children, input }) {
         setErrNum(false);
         setErrtext(false);
       }
+      document.getElementsByClassName("dcg-graphpaper-branding")[0].style.display="none";
       return (() => {
         calculator.destroy();
       })
     }
-    else if (input == 2) {
+    else if (input === 2) {
       const elt = document.getElementById('calculator');
-      const calculator = Desmos.GraphingCalculator(elt, { keypad: false, expressions: false });
+      const calculator = Desmos.GraphingCalculator(elt, { keypad: false, expressions: false,settingsMenu:false,backgroundColor: "#e8e8e8",textColor:"#00334e",border:false});
+
       calculator.setExpression({ id: '1', latex: latex });
-      calculator.setExpression({ id: '2', latex: `x=${xL}`, lineStyle: Desmos.Styles.DASHED });
-      calculator.setExpression({ id: '3', latex: `x=${xR}`, lineStyle: Desmos.Styles.DASHED });
+      calculator.setExpression({ id: '2', latex: `${xL}<x<${xR}`, lineStyle: Desmos.Styles.DASHED });
+      // calculator.setExpression({ id: '3', latex: `x=${xR}`, lineStyle: Desmos.Styles.DASHED });
       
       try {
         (new AlgebraLatex().parseLatex(latex).toMath())
         math.evaluate((new AlgebraLatex().parseLatex(latex).toMath()), { x: 1 });
-        if (latex.search("x") != -1) {
+        if (latex.search("x") !== -1) {
           Number.isFinite(parseFloat(math.evaluate((new AlgebraLatex().parseLatex(latex).toMath()), { x: 1 }))) ? setErrtext(true) : setErrtext(false)
         } else {
           setErrtext(false)
@@ -67,14 +68,16 @@ export default function Test({ children, input }) {
         setErrNum(false);
         setErrtext(false);
         console.log(e.message);
-      }
+      } 
+      document.getElementsByClassName("dcg-graphpaper-branding")[0].style.display="none";
+      // document.getElementsByClassName("dcg-container")[0].style.backgroundColor="#4a919e";
       return (() => {
         calculator.destroy();
       })
     }
   }, [latex, xL, xR,input])
   useEffect(() => {
-    if (input ==1 ){
+    if (input === 1 ){
       return (() => {
         setLatex("");
         setxL("");
@@ -82,7 +85,7 @@ export default function Test({ children, input }) {
         setErrtext(false);
       })
     }
-    else if (input == 2) {
+    else if (input === 2) {
       return (() => {
         setLatex("");
         setxL("");
@@ -92,7 +95,7 @@ export default function Test({ children, input }) {
       })
     }
   }, [children,input])
-  if(input==1){
+  if(input===1){
     return (
       <react.Fragment>
         <div className="show">
@@ -106,8 +109,7 @@ export default function Test({ children, input }) {
               setxL(p.target.value);
             }} placeholder="input x0" />
           </div>
-          <div id="calculator" style={{ width: 700, height: 500, textAlign: "center" }}>
-          </div>
+          <div id="calculator" style={{ width: 700, height: 500, textAlign: "center",overflow:"hidden",borderRadius:"0.7em"}} />
         </div>
         {
           errnum && errtext && React.cloneElement(children, { xL: xL,fx: latex })
@@ -115,7 +117,7 @@ export default function Test({ children, input }) {
       </react.Fragment>
     );
   }
-  else if (input == 2) {
+  else if (input === 2) {
     return (
       <react.Fragment>
         <div className="show">
@@ -132,8 +134,7 @@ export default function Test({ children, input }) {
               setxR(p.target.value);
             }} placeholder="input xR" />
           </div>
-          <div id="calculator" style={{ width: 700, height: 500, textAlign: "center" }}>
-          </div>
+          <div id="calculator" style={{ width: 700, height: 500, textAlign: "center",overflow:"hidden",borderRadius:"0.7em"}} />
         </div>
         {
           errnum && errtext && React.cloneElement(children, { xL: xL, xR: xR, fx: latex })

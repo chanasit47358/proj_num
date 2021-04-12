@@ -60,16 +60,16 @@ function Falseposition({xL,xR,fx}){
           var temp6=fx.replace(/x/g,a[i-1].xL);
           var temp7=fx.replace(/x/g,a[i-1].xR);  
         }
-        return i==0?
+        return i===0?
         (
           <Card title="Initial" bordered={true} key={i}>
           <p><StaticMathField>{"x_l ="+v.xL0}</StaticMathField>&nbsp;<StaticMathField>{"x_r="+v.xR0}</StaticMathField></p>
           <p><StaticMathField>{"f\\left(x\\right)="+fx}</StaticMathField></p>
           <p><StaticMathField>{"f\\left(x_l\\right)="+temp0}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{temp2}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.fxL}</StaticMathField></p>
           <p><StaticMathField>{"f\\left(x_r\\right)="+temp1}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{temp3}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.fxR}</StaticMathField></p>
-          <p><StaticMathField>{"x_m=\\frac{\\left(x_l\\cdot f\\left(x_r\\right)\\right)-\\left(x_r\\cdot f\\left(x_l\\right)\\right)}{f\\left(x_r\\right)-f\\left(x_l\\right)}"}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{"\\frac{\\left("+v.xL0+"\\cdot "+v.fxR+"\\right)-\\left("+v.xR0+"\\cdot "+v.fxL+"\\right)}{"+v.fxR+"-"+v.fxL+"}"}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.xM}</StaticMathField></p>
+          <p><StaticMathField>{"x_m=\\frac{\\left(x_l\\cdot f\\left(x_r\\right)\\right)-\\left(x_r\\cdot f\\left(x_l\\right)\\right)}{f\\left(x_r\\right)-f\\left(x_l\\right)}"}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{`\\frac{\\left(${v.xL0}\\cdot ${v.fxR}\\right)-\\left(${v.xR0}\\cdot ${v.fxL}\\right)}{${v.fxR}-${v.fxL}}`}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.xM}</StaticMathField></p>
           <p><StaticMathField>{"f\\left(x_m\\right)="+temp4}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{temp5}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.fxM}</StaticMathField></p>
-          <p><StaticMathField>{"f\\left(x_m\\right)\\cdot f\\left(x_r\\right)="+"\\left("+v.fxM+"\\right)\\cdot "+"\\left("+v.fxR+"\\right)"}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.fxM*v.fxR}</StaticMathField></p>
+          <p><StaticMathField>{`f\\left(x_m\\right)\\cdot f\\left(x_r\\right)=\\left(${v.fxM}\\right)\\cdot\\left(${v.fxR}\\right)`}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.fxM*v.fxR}</StaticMathField></p>
           {v.fxM*v.fxR>0?<p><StaticMathField>{"f\\left(x_m\\right)\\cdot f\\left(x_r\\right) > 0"}</StaticMathField></p>:<p><StaticMathField>{"f\\left(x_m\\right)\\cdot f\\left(x_r\\right) \\leq 0"}</StaticMathField></p>}
           {v.fxM*v.fxR>0?<p><StaticMathField>{"x_r=x_m="+v.xM}</StaticMathField></p>:<p><StaticMathField>{"x_l=x_m="+v.xM}</StaticMathField></p>}
           </Card>
@@ -81,7 +81,7 @@ function Falseposition({xL,xR,fx}){
           <p><StaticMathField>{"f\\left(x_r\\right)="+temp1}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{temp7}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.fxR}</StaticMathField></p>
           <p><StaticMathField>{"x_m=\\frac{\\left(x_l\\cdot f\\left(x_r\\right)\\right)-\\left(x_r\\cdot f\\left(x_l\\right)\\right)}{f\\left(x_r\\right)-f\\left(x_l\\right)}"}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{"\\frac{\\left("+a[i-1].xL+"\\cdot "+v.fxR+"\\right)-\\left("+a[i-1].xR+"\\cdot "+v.fxL+"\\right)}{"+v.fxR+"-"+v.fxL+"}"}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.xM}</StaticMathField></p>
           <p><StaticMathField>{"f\\left(x_m\\right)="+temp4}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{temp5}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.fxM}</StaticMathField></p>
-          <p><StaticMathField>{"f\\left(x_m\\right)\\cdot f\\left(x_r\\right)="+"\\left("+v.fxM+"\\right)\\cdot "+"\\left("+v.fxR+"\\right)"}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.fxM*v.fxR}</StaticMathField></p>
+          <p><StaticMathField>{`f\\left(x_m\\right)\\cdot f\\left(x_r\\right)=\\left(${v.fxM}\\right)\\cdot \\left(${v.fxR}\\right)`}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.fxM*v.fxR}</StaticMathField></p>
           {v.fxM*v.fxR>0?<p><StaticMathField>{"f\\left(x_m\\right)\\cdot f\\left(x_r\\right) > 0"}</StaticMathField></p>:<p><StaticMathField>{"f\\left(x_m\\right)\\cdot f\\left(x_r\\right) \\leq 0"}</StaticMathField></p>}
           {v.fxM*v.fxR>0?<p><StaticMathField>{"x_r=x_m="+v.xM}</StaticMathField></p>:<p><StaticMathField>{"x_l=x_m="+v.xM}</StaticMathField></p>}
           <p><StaticMathField>{"\\varepsilon="}</StaticMathField><StaticMathField>{"\\left|\\frac{x_{m\\left(new\\right)}-x_{m\\left(old\\right)}}{x_{m\\left(new\\right)}}\\right|"}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{"\\left|\\frac{"+v.xM+"-"+a[i-1].xM+"}{"+v.xM+"}\\right|"}</StaticMathField>&nbsp;=&gt;&nbsp;<StaticMathField>{v.err}</StaticMathField></p>
