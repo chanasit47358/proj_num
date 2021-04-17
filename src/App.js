@@ -2,6 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
 import { Layout, Menu } from "antd";
+import { HomeFilled } from "@ant-design/icons";
 import Test from "./test";
 import { addStyles } from "react-mathquill";
 import Bisection from "./method/Root_of_equation/bisection";
@@ -16,7 +17,13 @@ import Lu from "./method/Linear_algebra/Lu";
 import Jacob from "./method/Linear_algebra/Jacobi";
 import Gausssei from "./method/Linear_algebra/Gauss_seidel";
 import Conju from "./method/Linear_algebra/conjugate";
-
+import Tet from "./method/Linear_algebra/tet";
+import Nd from "./method/Interpolation/Nd";
+import Lg from "./method/Interpolation/Lg";
+import Sp from "./method/Interpolation/sp";
+import Ln from "./method/regression/linear";
+import Pm from "./method/regression/poly";
+import Ml from "./method/regression/multi";
 
 // import axios from 'axios'
 
@@ -59,6 +66,9 @@ function App() {
           }}
           selectedKeys={current}
         >
+          <Menu.Item key="/" icon={<HomeFilled />}>
+            <Link to="/">HOME</Link>
+          </Menu.Item>
           <SubMenu key="Menu1" title="Root of Equation">
             <Menu.Item key="/Bisection">
               <Link to="/Bisection">Bisection</Link>
@@ -97,6 +107,30 @@ function App() {
             </Menu.Item>
             <Menu.Item key="/conjugate_gradient">
               <Link to="/conjugate_gradient">Conjugate Gradient</Link>
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu key="Menu3" title="Interpolation">
+            <Menu.Item key="/newton_divided_difference">
+              <Link to="/newton_divided_difference">
+                Newton Divided Difference
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/lagrange">
+              <Link to="/lagrange">Lagrange</Link>
+            </Menu.Item>
+            <Menu.Item key="/spline">
+              <Link to="/spline">Spline</Link>
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu key="Menu4" title="Least Square Regression ">
+            <Menu.Item key="/lnr">
+              <Link to="/lnr">Linear Regression</Link>
+            </Menu.Item>
+            <Menu.Item key="/pmr">
+              <Link to="/pmr">Polynomial Regression</Link>
+            </Menu.Item>
+            <Menu.Item key="/mlr">
+              <Link to="/mlr">Multiple Linear Regression</Link>
             </Menu.Item>
           </SubMenu>
         </Menu>
@@ -181,10 +215,45 @@ function App() {
               <Conju />
             </div>
           </Route>
+          <Route path="/tet">
+            <div className="site-layout-content">
+              <Tet />
+            </div>
+          </Route>
+          <Route path="/newton_divided_difference">
+            <div className="site-layout-content">
+              <Nd />
+            </div>
+          </Route>
+          <Route path="/lagrange">
+            <div className="site-layout-content">
+              <Lg />
+            </div>
+          </Route>
+          <Route path="/spline">
+            <div className="site-layout-content">
+              <Sp />
+            </div>
+          </Route>
+          <Route path="/lnr">
+            <div className="site-layout-content">
+              <Ln />
+            </div>
+          </Route>
+          <Route path="/pmr">
+            <div className="site-layout-content">
+              <Pm />
+            </div>
+          </Route>
+          <Route path="/mlr">
+            <div className="site-layout-content">
+              <Ml />
+            </div>
+          </Route>
         </Switch>
       </Content>
       <Footer style={{ textAlign: "center" }}>
-        Ant Design ©2018 Created by Ant UED
+        NUMERICAL METHOD ©2021 Created by samui
       </Footer>
     </Layout>
   );

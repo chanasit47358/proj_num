@@ -1,202 +1,197 @@
 import react, { useEffect, useState } from "react";
 import { StaticMathField } from "react-mathquill";
 import { InputNumber, Button, Card } from "antd";
+import axios from "axios";
+
 const linSystem = require("linear-equation-system");
 const math = require("mathjs");
+
 function Gaussjordan() {
-  const [row, setRow] = useState(1);
+  const [inputA, setInputA] = useState([]);
+  const [inputB, setInputB] = useState([]);
   const [column, setColumn] = useState(1);
-  const [array, setArray] = useState([]);
-  const [input, setinput] = useState([]);
-  const [change, setChange] = useState(false);
+  const [arrayA, setArrayA] = useState([]);
   const [arrayB, setArrayB] = useState([]);
-  const [inputB, setinputB] = useState([]);
-  const [changeB, setChangeB] = useState(false);
   const [calcu, setCalcu] = useState([]);
-  console.log("arrayA:" + array);
-  console.log("arrayB:" + arrayB);
   useEffect(() => {
-    setinput(() => {
-      let k = array.map((value, i) => {
-        let temp = value.map((value1, j) => {
-          return (
-            <InputNumber
-              key={"b" + i + " " + j}
-              value={value1}
-              onChange={(valuetemp) => {
-                setArray((temparray) => {
-                  temparray[i][j] = valuetemp;
-                  return temparray;
-                });
-                setChange(!change);
-              }}
-            />
-          );
+    if (arrayA.length !== 0 && arrayB.length !== 0) {
+      setCalcu(() => {
+        let a = math.matrix(arrayA);
+        let b = math.matrix(arrayB);
+        let c = math.clone(a);
+        let d = math.clone(b);
+        let t = linSystem.solve(c._data, d._data);
+        let x = t.map((v) => {
+          return math.round(parseFloat(v), 6);
         });
-        return <div key={"a" + i}>{temp}</div>;
+        return x;
       });
-      return k;
-    });
-    return () => {
-      setinput([]);
-    };
-  }, [array, change]);
-  useEffect(() => {
-    setinputB(() => {
-      let k = arrayB.map((value, i) => {
-        let temp = value.map((value1, j) => {
-          return (
-            <InputNumber
-              key={"bb" + i + " " + j}
-              value={value1}
-              onChange={(valuetemp) => {
-                setArrayB((temparray) => {
-                  temparray[i][j] = valuetemp;
-                  return temparray;
-                });
-                setChangeB(!changeB);
-              }}
-            />
-          );
-        });
-        return <div key={"aa" + i}>{temp}</div>;
-      });
-      return k;
-    });
-    return () => {
-      setinputB([]);
-    };
-  }, [arrayB, changeB]);
-  function cal() {
-    setCalcu(() => {
-        let a=math.matrix(array)
-        let b=math.matrix(arrayB)
-        let c=math.clone(a);
-        let d=math.clone(b);
-      let t = linSystem.solve(c._data,d._data);
-      let x=t.map((v)=>{
-          return math.round(parseFloat(v),6);
+    }
+  }, [arrayA, arrayB]);
+
+  async function cal() {
+    let tempcol = [];
+    for (let i = 0; i < column; i++) {
+      let temprow = [];
+      for (let j = 0; j < column; j++) {
+        temprow.push(
+          Number(document.getElementById("InputA" + i + " " + j).value)
+        );
+      }
+      tempcol.push(temprow);
+    }
+    console.log(tempcol);
+    await setArrayA(tempcol);
+    tempcol = [];
+    for (let i = 0; i < column; i++) {
+      let temprow = [];
+      temprow.push(Number(document.getElementById("InputB" + i).value));
+      tempcol.push(temprow);
+    }
+    console.log(tempcol);
+    await setArrayB(tempcol);
+  }
+  async function example() {
+    let x = await axios({
+      method: "get",
+      url: `http://localhost:8080/gaussjordan`,
+    })
+      .then((response) => {
+        return response.data;
       })
-      return x;
-    });
-    console.log(array);
-  }
-  function create() {
-    setArray(() => {
-      var temp = [];
-      for (let i = 0; i < column; i++) {
-        temp.push([]);
-        for (let j = 0; j < row; j++) {
-          temp[i].push(0);
+      .catch((err) => {
+        return undefined;
+      });
+    if (x !== undefined) {
+      // await setColumn(x.col);
+      console.log(column);
+      await setInputA([]);
+      await setInputB([]);
+      await setArrayA([]);
+      await setArrayB([]);
+      await setCalcu([]);
+      let tempdiv = [];
+      for (let i = 0; i < x.col; i++) {
+        let tempinput = [];
+        for (let j = 0; j < x.col; j++) {
+          tempinput.push(
+            <InputNumber
+              key={"InputA" + i + " " + j}
+              id={"InputA" + i + " " + j}
+              defaultValue={0}
+            />
+          );
         }
+        tempdiv.push(<div key={"I:" + i}>{tempinput}</div>);
       }
-      return temp;
-    });
-    setinput(() => {
-      let k = array.map((value, i) => {
-        let temp = value.map((value1, j) => {
-          return (
-            <InputNumber
-              key={"b" + i + " " + j}
-              value={value1}
-              onChange={(valuetemp) => {
-                setArray((temparray) => {
-                  temparray[i][j] = valuetemp;
-                  return temparray;
-                });
-              }}
-            />
-          );
-        });
-        return <div key={"a" + i}>{temp}</div>;
-      });
-      return k;
-    });
-    setArrayB(() => {
-      var temp = [];
-      for (let i = 0; i < column; i++) {
-        temp.push([]);
-        temp[i].push(0);
+      console.log(tempdiv);
+      setInputA(tempdiv);
+      tempdiv = [];
+      for (let i = 0; i < x.col; i++) {
+        let tempinput = [];
+        tempinput.push(
+          <InputNumber key={"InputB" + i} id={"InputB" + i} defaultValue={0} />
+        );
+        tempdiv.push(<div key={"II:" + i}>{tempinput}</div>);
       }
-      return temp;
-    });
-    setinputB(() => {
-      let k = arrayB.map((value, i) => {
-        let temp = value.map((value1, j) => {
-          return (
-            <InputNumber
-              key={"bb" + i + " " + j}
-              value={value1}
-              onChange={(valuetemp) => {
-                setArrayB((temparray) => {
-                  temparray[i][j] = valuetemp;
-                  return temparray;
-                });
-              }}
-            />
-          );
-        });
-        return <div key={"aa" + i}>{temp}</div>;
-      });
-      return k;
-    });
+      setInputB(tempdiv);
+      console.log(document.getElementById("InputA" + 0 + " " + 1).value);
+      for (let i = 0; i < x.A.length; i++) {
+        for (let j = 0; j < x.A[i].length; j++) {
+          document.getElementById("InputA" + i + " " + j).value = x.A[i][
+            j
+          ].toString();
+        }
+        document.getElementById("InputB" + i).value = x.B[i][0].toString();
+      }
+      setColumn(x.col);
+    }
   }
-  function clear() {
-    setArray([]);
-    setinput([]);
-    setArrayB([]);
-    setinputB([]);
-    setCalcu([]);
+  async function create() {
+    await setInputA([]);
+    await setInputB([]);
+    await setArrayA([]);
+    await setArrayB([]);
+    await setCalcu([]);
+    let tempdiv = [];
+    for (let i = 0; i < column; i++) {
+      let tempinput = [];
+      for (let j = 0; j < column; j++) {
+        tempinput.push(
+          <InputNumber
+            key={"InputA" + i + " " + j}
+            id={"InputA" + i + " " + j}
+            defaultValue={0}
+          />
+        );
+      }
+      tempdiv.push(<div key={"I:" + i}>{tempinput}</div>);
+    }
+    console.log(tempdiv);
+    setInputA(tempdiv);
+    tempdiv = [];
+    for (let i = 0; i < column; i++) {
+      let tempinput = [];
+      tempinput.push(
+        <InputNumber key={"InputB" + i} id={"InputB" + i} defaultValue={0} />
+      );
+      tempdiv.push(<div key={"II:" + i}>{tempinput}</div>);
+    }
+    setInputB(tempdiv);
   }
   return (
     <react.Fragment>
-      <InputNumber
-        min={1}
-        value={column}
-        onChange={(e) => {
-          setColumn(e);
+      <h1>Gaussian Jordan</h1>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
         }}
-      />
-      <InputNumber
-        min={1}
-        value={row}
-        onChange={(e) => {
-          setRow(e);
-        }}
-      />
-      {array.length === 0 && (
-        <Button type="primary" onClick={create}>
-          SET METRIX
-        </Button>
-      )}
-      {array.length !== 0 && (
-        <div key="setMetrix">
-          <h1>INPUT A</h1>
-          {input}
-          <h1>INPUT B</h1>
-          {inputB}
-          <br />
-          <div>
-            <Button type="primary" onClick={cal}>
-              CALCULATOR
-            </Button>
-            <Button type="primary" onClick={clear}>
-              CLEAR METRIX
-            </Button>
-          </div>
+      >
+        <div>
+          <InputNumber
+            min={0}
+            value={column}
+            onChange={(e) => {
+              setColumn(e);
+            }}
+          />
+          <Button type="primary" onClick={create}>
+            SET METRIX
+          </Button>
+          <Button type="primary" onClick={example}>
+            EXAMPLE
+          </Button>
+          {inputA.length !== 0 && inputB.length && (
+            <div key="setMetrix">
+              <h1>INPUT A</h1>
+              {inputA}
+              <h1>INPUT B</h1>
+              {inputB}
+              <br />
+              <div>
+                <Button type="primary" onClick={cal}>
+                  CALCULATOR
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
-      )}
-      {calcu.length !== 0 && (
-        <Card title="ANSWER" style={{ width: 300 }}>
-          {calcu.map((v, i) => {
-            return (
-              <p>
-                <StaticMathField>{`x_${i + 1}=${v}`}</StaticMathField>
-              </p>
-            );
-          })}
-        </Card>
-      )}
+        <div>
+          {calcu.length !== 0 && (
+            <Card title="ANSWER" style={{ width: 300 }}>
+              {calcu.map((v, i) => {
+                return (
+                  <p key={"TEXT:" + i}>
+                    <StaticMathField>{`x_${i + 1}=${v}`}</StaticMathField>
+                  </p>
+                );
+              })}
+            </Card>
+          )}
+        </div>
+      </div>
     </react.Fragment>
   );
 }
