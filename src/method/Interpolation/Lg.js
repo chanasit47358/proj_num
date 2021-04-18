@@ -2,7 +2,7 @@
 import react, { useState, useEffect } from "react";
 import { InputNumber, Button, Card } from "antd";
 import { StaticMathField } from "react-mathquill";
-
+import axios from "axios";
 function Lg() {
   const [column, setColumn] = useState(0);
   const [columnInter, setColumnInter] = useState(2);
@@ -54,6 +54,7 @@ function Lg() {
       ]);
     }
   }, [ArrayX, ArrayY, inputDoubt, columnInter]);
+
   async function cal() {
     await setArrayX([]);
     await setArrayY([]);
@@ -67,6 +68,65 @@ function Lg() {
       temp.push(Number(document.getElementById("inputY" + i).value));
     }
     setArrayY(temp);
+  }
+  async function example() {
+    let x = await axios({
+      method: "get",
+      url: "http://localhost:8080/lg",
+    })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((err) => {
+        return undefined;
+      });
+    console.log(x);
+    if (x !== undefined) {
+      await setinputX([]);
+      await setinputY([]);
+      await setArrayX([]);
+      await setArrayY([]);
+      await setColumnInter(2);
+      await setinputDoubt(0);
+      await setinputCount([]);
+      await setShow([]);
+      let tempdiv = [];
+      for (let i = 0; i < x.col; i++) {
+        let tempcol = [];
+        tempcol.push(<InputNumber key={"inputX" + i} id={"inputX" + i} />);
+        tempdiv.push(<div key={"I" + i}>{tempcol}</div>);
+      }
+      setinputX(tempdiv);
+      tempdiv = [];
+      for (let i = 0; i < x.col; i++) {
+        let tempcol = [];
+        tempcol.push(<InputNumber key={"inputY" + i} id={"inputY" + i} />);
+        tempdiv.push(<div key={"II" + i}>{tempcol}</div>);
+      }
+      setinputY(tempdiv);
+      tempdiv = [];
+      for (let i = 0; i < x.i; i++) {
+        let tempcol = [];
+        tempcol.push(
+          <InputNumber
+            min={1}
+            max={x.col}
+            defaultValue={i + 1}
+            key={"inputCount" + i}
+            id={"inputCount" + i}
+          />
+        );
+        tempdiv.push(<div key={"III" + i}>{tempcol}</div>);
+      }
+      setinputCount(tempdiv);
+      for (let i = 0; i < x.col; i++) {
+        document.getElementById("inputX" + i).value = x.X[i].toString();
+        document.getElementById("inputY" + i).value = x.Y[i].toString();
+      }
+      setinputDoubt(x.Xi);
+      setColumn(x.col);
+      setColumnInter(x.i);
+    }
   }
   async function createInterpo() {
     await setinputCount([]);
@@ -129,6 +189,7 @@ function Lg() {
             }}
           ></InputNumber>
           <Button onClick={create}>SET</Button>
+          <Button onClick={example}>EXAMPLE</Button>
           {inputX.length !== 0 && inputY.length !== 0 && (
             <div>
               <div style={{ display: "flex", flexDirection: "row" }}>

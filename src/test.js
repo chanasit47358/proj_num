@@ -9,7 +9,7 @@ const math = require("mathjs");
 
 // const elt =document.getElementById('calculator');
 // var calculator = Desmos.GraphingCalculator(elt,{keypad:false,expressions:false});
-export default function Test({ children, input }) {
+export default function Test({ children, input, nm }) {
   const [latex, setLatex] = useState("");
   const [xL, setxL] = useState("");
   const [xR, setxR] = useState("");
@@ -19,7 +19,7 @@ export default function Test({ children, input }) {
     console.log(children.type.name);
     let x = await axios({
       method: "get",
-      url: `http://localhost:8080/${children.type.name}`,
+      url: `http://localhost:8080/${nm}`,
     })
       .then((response) => {
         // console.log("response: ", response);
@@ -34,7 +34,7 @@ export default function Test({ children, input }) {
         await setxL(x.x0);
         await setLatex(new AlgebraLatex().parseMath(x.fx).toLatex());
       } else {
-        if (children.type.name === "Secant") {
+        if (nm === "Secant") {
           await setLatex(new AlgebraLatex().parseMath(x.fx).toLatex());
           await setxL(x.x0);
           await setxR(x.x1);
@@ -92,7 +92,7 @@ export default function Test({ children, input }) {
         calculator.destroy();
       };
     } else if (input === 2) {
-      if (children.type.name === "Secant") {
+      if (nm === "Secant") {
         const elt = document.getElementById("calculator");
         const calculator = Desmos.GraphingCalculator(elt, {
           keypad: false,
@@ -209,7 +209,7 @@ export default function Test({ children, input }) {
         };
       }
     }
-  }, [latex, xL, xR, input, children]);
+  }, [latex, xL, xR, input, children, nm]);
   useEffect(() => {
     if (input === 1) {
       return () => {
@@ -227,7 +227,7 @@ export default function Test({ children, input }) {
         setErrtext(false);
       };
     }
-  }, [children, input]);
+  }, [children, input, nm]);
   if (input === 1) {
     return (
       <react.Fragment>
@@ -269,7 +269,7 @@ export default function Test({ children, input }) {
       </react.Fragment>
     );
   } else if (input === 2) {
-    if (children.type.name === "Secant") {
+    if (nm === "Secant") {
       return (
         <react.Fragment>
           <Button type="primary" onClick={example}>

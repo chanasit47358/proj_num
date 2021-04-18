@@ -17,7 +17,6 @@ import Lu from "./method/Linear_algebra/Lu";
 import Jacob from "./method/Linear_algebra/Jacobi";
 import Gausssei from "./method/Linear_algebra/Gauss_seidel";
 import Conju from "./method/Linear_algebra/conjugate";
-import Tet from "./method/Linear_algebra/tet";
 import Nd from "./method/Interpolation/Nd";
 import Lg from "./method/Interpolation/Lg";
 import Sp from "./method/Interpolation/sp";
@@ -45,6 +44,7 @@ const { SubMenu } = Menu;
 function App() {
   const location = useLocation();
   const [current, setCurrent] = useState("/");
+  console.log(location);
   useEffect(() => {
     setCurrent(location.pathname);
   }, [location]);
@@ -143,7 +143,7 @@ function App() {
           <Route path="/Bisection">
             <div className="site-layout-content">
               <h2>Bisection</h2>
-              <Test input={2}>
+              <Test input={2} nm={"Bisection"}>
                 <Bisection />
               </Test>
             </div>
@@ -151,7 +151,7 @@ function App() {
           <Route path="/False_Position">
             <div className="site-layout-content">
               <h2>False Position</h2>
-              <Test input={2}>
+              <Test input={2} nm={"Falseposition"}>
                 <Falseposition />
               </Test>
             </div>
@@ -159,7 +159,7 @@ function App() {
           <Route path="/One_Point">
             <div className="site-layout-content">
               <h2>One Point</h2>
-              <Test input={1}>
+              <Test input={1} nm={"Onepoint"}>
                 <Onepoint />
               </Test>
             </div>
@@ -167,7 +167,7 @@ function App() {
           <Route path="/Newton_Rhapson">
             <div className="site-layout-content">
               <h2>Newton Rhapson</h2>
-              <Test input={1}>
+              <Test input={1} nm={"Nr"}>
                 <Nr />
               </Test>
             </div>
@@ -175,7 +175,7 @@ function App() {
           <Route path="/Secant">
             <div className="site-layout-content">
               <h2>Secant</h2>
-              <Test input={2}>
+              <Test input={2} nm={"Secant"}>
                 <Secant />
               </Test>
             </div>
@@ -213,11 +213,6 @@ function App() {
           <Route path="/conjugate_gradient">
             <div className="site-layout-content">
               <Conju />
-            </div>
-          </Route>
-          <Route path="/tet">
-            <div className="site-layout-content">
-              <Tet />
             </div>
           </Route>
           <Route path="/newton_divided_difference">

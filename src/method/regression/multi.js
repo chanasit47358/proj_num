@@ -1,6 +1,7 @@
 import react, { useState, useEffect } from "react";
 import { InputNumber, Button, Card } from "antd";
 import { StaticMathField } from "react-mathquill";
+import axios from "axios";
 const { regression } = require("multiregress");
 function Ml() {
   const [column, setColumn] = useState(0);
@@ -61,7 +62,71 @@ function Ml() {
     }
     setArrayY(temp);
   }
+  async function example() {
+    let x = await axios({
+      method: "get",
+      url: "http://localhost:8080/mlr",
+    })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((err) => {
+        return undefined;
+      });
+    console.log(x);
+    if (x !== undefined) {
+      await setinputX([]);
+      await setinputY([]);
+      await setArrayX([]);
+      await setArrayY([]);
+      await setinputDoubt(0);
+      await setShow([]);
+      let tempdiv = [];
+      for (let i = 0; i < x.col; i++) {
+        let tempcol = [];
+        for (let j = 0; j < x.row; j++) {
+          tempcol.push(
+            <InputNumber
+              key={"inputX" + i + " " + j}
+              id={"inputX" + i + " " + j}
+            />
+          );
+        }
 
+        tempdiv.push(<div key={"I" + i}>{tempcol}</div>);
+      }
+      setinputX(tempdiv);
+      tempdiv = [];
+      for (let i = 0; i < x.col; i++) {
+        let tempcol = [];
+        tempcol.push(<InputNumber key={"inputY" + i} id={"inputY" + i} />);
+        tempdiv.push(<div key={"II" + i}>{tempcol}</div>);
+      }
+      setinputY(tempdiv);
+      tempdiv = [];
+      var tempcol = [];
+      for (let i = 0; i < x.row; i++) {
+        tempcol.push(
+          <InputNumber key={"inputdoubt" + i} id={"inputdoubt" + i} />
+        );
+      }
+      tempdiv.push(<div>{tempcol}</div>);
+      setinputDoubt(tempdiv);
+      for (let i = 0; i < x.col; i++) {
+        for (let j = 0; j < x.row; j++) {
+          document.getElementById("inputX" + i + " " + j).value = x.X[i][
+            j
+          ].toString();
+        }
+        document.getElementById("inputY" + i).value = x.Y[i].toString();
+      }
+      for (let i = 0; i < x.row; i++) {
+        document.getElementById("inputdoubt" + i).value = x.Xi[i].toString();
+      }
+      setColumn(x.col);
+      setRow(x.row);
+    }
+  }
   async function create() {
     await setinputX([]);
     await setinputY([]);
@@ -128,6 +193,8 @@ function Ml() {
             }}
           ></InputNumber>
           <Button onClick={create}>SET</Button>
+          <Button onClick={example}>EXAMPLE</Button>
+
           {inputX.length !== 0 &&
             inputY.length !== 0 &&
             inputDoubt.length !== 0 && (
