@@ -1,8 +1,8 @@
 FROM node:15-alpine as build-stage
 WORKDIR /app
-COPY package*.json .
+COPY package*.json ./
 RUN npm i
-COPY . .
+COPY . ./
 RUN npm run build
 
 FROM nginx
