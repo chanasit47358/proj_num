@@ -33,7 +33,7 @@ function Sp() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: "http://localhost:8080/sp",
+      url: "http://localhost:8080/sp?api_key=gwargurainaokayuaquaqulia",
     })
       .then((response) => {
         return response.data;

@@ -57,7 +57,7 @@ function Ln() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: "http://localhost:8080/lr",
+      url: "http://localhost:8080/lr?api_key=gwargurainaokayuaquaqulia",
     })
       .then((response) => {
         return response.data;

@@ -53,7 +53,7 @@ function Pm() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: "http://localhost:8080/pr",
+      url: "http://localhost:8080/pr?api_key=gwargurainaokayuaquaqulia",
     })
       .then((response) => {
         return response.data;

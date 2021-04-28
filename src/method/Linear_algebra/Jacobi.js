@@ -115,7 +115,7 @@ function Jacob() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: `http://localhost:8080/jacobi`,
+      url: `http://localhost:8080/jacobi?api_key=gwargurainaokayuaquaqulia`,
     })
       .then((response) => {
         return response.data;

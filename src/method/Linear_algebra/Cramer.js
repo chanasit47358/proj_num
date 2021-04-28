@@ -59,7 +59,7 @@ function Cramer() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: `http://localhost:8080/cramer`,
+      url: `http://localhost:8080/cramer?api_key=gwargurainaokayuaquaqulia`,
     })
       .then((response) => {
         return response.data;

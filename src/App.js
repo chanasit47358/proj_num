@@ -1,8 +1,8 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
-import { Layout, Menu } from "antd";
-import { HomeFilled } from "@ant-design/icons";
+import { Layout, Menu, Card } from "antd";
+import { HomeFilled, FacebookFilled, GithubFilled } from "@ant-design/icons";
 import Test from "./test";
 import { addStyles } from "react-mathquill";
 import Bisection from "./method/Root_of_equation/bisection";
@@ -23,7 +23,6 @@ import Sp from "./method/Interpolation/sp";
 import Ln from "./method/regression/linear";
 import Pm from "./method/regression/poly";
 import Ml from "./method/regression/multi";
-
 // import axios from 'axios'
 
 // axios({
@@ -67,7 +66,9 @@ function App() {
           selectedKeys={current}
         >
           <Menu.Item key="/" icon={<HomeFilled />}>
-            <Link to="/">HOME</Link>
+            <Link to="/" className="customclass">
+              HOME
+            </Link>
           </Menu.Item>
           <SubMenu key="Menu1" title="Root of Equation">
             <Menu.Item key="/Bisection">
@@ -138,7 +139,53 @@ function App() {
       <Content style={{ padding: "0 50px" }}>
         <Switch>
           <Route exact path="/">
-            <div className="site-layout-content"></div>
+            <div className="site-layout-content">
+              <img
+                src={
+                  "https://media.tenor.com/images/c7b327dbad04316b8974779b1019b798/tenor.gif"
+                }
+                alt={"gura"}
+                className={"bonk"}
+              />
+              <p className={"text"}>NUMERICAL METHOD</p>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Card
+                  style={{ width: 300, background: "none" }}
+                  bordered={false}
+                >
+                  <a
+                    href={"https://www.facebook.com/t.kukkuk"}
+                    target={"_blank"}
+                    rel={"noreferrer"}
+                    style={{ display: "block", color: "black" }}
+                    id={"myface"}
+                    onMouseOver={() => {
+                      document.getElementById("myface").style.color = "grey";
+                    }}
+                    onMouseOut={() => {
+                      document.getElementById("myface").style.color = "black";
+                    }}
+                  >
+                    <FacebookFilled /> : Sirawit Suwannakin
+                  </a>
+                  <a
+                    href={"https://github.com/samuiii"}
+                    target={"_blank"}
+                    rel={"noreferrer"}
+                    style={{ display: "block", color: "black" }}
+                    id={"mygit"}
+                    onMouseOver={() => {
+                      document.getElementById("mygit").style.color = "grey";
+                    }}
+                    onMouseOut={() => {
+                      document.getElementById("mygit").style.color = "black";
+                    }}
+                  >
+                    <GithubFilled /> : Samuiii
+                  </a>
+                </Card>
+              </div>
+            </div>
           </Route>
           <Route path="/Bisection">
             <div className="site-layout-content">

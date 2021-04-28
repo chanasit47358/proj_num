@@ -1,5 +1,5 @@
 import react, { useEffect, useState } from "react";
-import { InputNumber, Button, Table } from "antd";
+import { InputNumber, Button, Table, Card } from "antd";
 import axios from "axios";
 const math = require("mathjs");
 
@@ -13,85 +13,139 @@ function Conju() {
   const [arrayX, setArrayX] = useState([]);
   const [columndata, setColumndata] = useState([]);
   const [dataSource, setdataSource] = useState([]);
+  const [tet, setTet] = useState([]);
+  const [sh, setSh] = useState([]);
   useEffect(() => {
     if (arrayA.length !== 0 && arrayB.length !== 0 && arrayX.length !== 0) {
       var err = Infinity;
-      var a = math.matrix(arrayA);
-      var b = math.matrix(arrayB);
-      var x = math.matrix(arrayX);
-      var r = math.subtract(math.multiply(a, x), b);
-      var d = math.multiply(r, -1);
-      // let p ={};
-      var Arraytemp = [{ x: arrayX }];
-      var count = 0;
-      while (err > 0.00001) {
-        var lamb = math.multiply(
-          math.divide(
-            math.multiply(math.transpose(d), r),
-            math.multiply(math.multiply(math.transpose(d), a), d)
-          ),
-          -1
+      console.log(arrayA);
+      let t = true;
+      let carddd = [];
+      for (let i = 0; i < arrayA.length; i++) {
+        t =
+          math.det(
+            math.subset(
+              arrayA,
+              math.index(math.range(0, i + 1), math.range(0, i + 1))
+            )
+          ) > 0;
+        carddd.push(
+          math.det(
+            math.subset(
+              arrayA,
+              math.index(math.range(0, i + 1), math.range(0, i + 1))
+            )
+          )
         );
-        x = math.add(x, math.multiply(d, lamb));
-        r = math.subtract(math.multiply(a, x), b);
-        err = math.subset(
-          math.sqrt(math.multiply(math.transpose(r), r)),
-          math.index(0, 0)
-        );
-        if (err === 0) {
+        if (t === false) {
           break;
         }
-        Arraytemp.push({ x: x._data });
-        var alpha = math.divide(
-          math.multiply(math.multiply(math.transpose(r), a), d),
-          math.multiply(math.multiply(math.transpose(d), a), d)
+      }
+      if (t === false) {
+        setSh(
+          <Card
+            title="POSITIVE DEFINITE MATRIX"
+            bordered={false}
+            style={{ width: 300 }}
+          >
+            {carddd.map((v, i) => {
+              return <p>{"det(" + (i + 1) + "," + (i + 1) + ")=" + v}</p>;
+            })}
+          </Card>
         );
-        d = math.add(math.multiply(r, -1), math.multiply(d, alpha));
-        if (count > 4) {
-          break;
+      } else {
+        var a = math.matrix(arrayA);
+        var b = math.matrix(arrayB);
+        var x = math.matrix(arrayX);
+        var r = math.subtract(math.multiply(a, x), b);
+        var d = math.multiply(r, -1);
+        // let p ={};
+        var Arraytemp = [{ x: arrayX }];
+        // var count = 0;
+        while (err > 0.00001) {
+          try {
+            var lamb = math.multiply(
+              math.divide(
+                math.multiply(math.transpose(d), r),
+                math.multiply(math.multiply(math.transpose(d), a), d)
+              ),
+              -1
+            );
+            x = math.add(x, math.multiply(d, lamb));
+            r = math.subtract(math.multiply(a, x), b);
+            err = math.subset(
+              math.sqrt(math.multiply(math.transpose(r), r)),
+              math.index(0, 0)
+            );
+            if (x._data.find((v) => isNaN(v))) {
+              break;
+            }
+            // console.log(err);s
+            if (err === 0) {
+              break;
+            }
+            Arraytemp.push({ x: x._data });
+            var alpha = math.divide(
+              math.multiply(math.multiply(math.transpose(r), a), d),
+              math.multiply(math.multiply(math.transpose(d), a), d)
+            );
+            d = math.add(math.multiply(r, -1), math.multiply(d, alpha));
+          } catch (e) {
+            break;
+          }
         }
-        count++;
-      }
-      console.log(x);
-      console.log(Arraytemp);
-      // p["x1"]=5;
-      // console.log(p);
-      // console.log(ArrrayX);
-      let columntemp = [{}];
-      columntemp[0] = {
-        title: "Iteration",
-        dataIndex: "Iteration",
-        key: "Iteration",
-      };
-      for (let j = 0; j < Arraytemp[0].x.length; j++) {
-        columntemp[j + 1] = {
-          title: `x${j + 1}`,
-          dataIndex: `x${j + 1}`,
-          key: `x${j + 1}`,
+        // console.log("a" + x);
+        // console.log("b" + Arraytemp);
+        // console.log(math.multiply(arrayA, x));
+        let qwer = math.multiply(arrayA, Arraytemp[Arraytemp.length - 1].x);
+        let q = qwer.map((v, i) => {
+          return <h1>{`B${i + 1}=${v}`}</h1>;
+        });
+        setTet(q);
+        // p["x1"]=5;
+        // console.log(p);
+        // console.log(ArrrayX);
+        let columntemp = [{}];
+        columntemp[0] = {
+          title: "Iteration",
+          dataIndex: "Iteration",
+          key: "Iteration",
         };
-      }
-      console.log(columntemp);
-      let datatemp = [{}];
-      for (let i = 0; i < Arraytemp.length; i++) {
-        datatemp[i] = {
-          key: `${i + 1}`,
-          Iteration: `${i}`,
-        };
-        for (let j = 0; j < Arraytemp[i].x.length; j++) {
-          datatemp[i] = {
-            ...datatemp[i],
-            ["x" + (j + 1)]: Arraytemp[i].x[j][0],
+        for (let j = 0; j < Arraytemp[0].x.length; j++) {
+          columntemp[j + 1] = {
+            title: `x${j + 1}`,
+            dataIndex: `x${j + 1}`,
+            key: `x${j + 1}`,
           };
         }
+        console.log(columntemp);
+        let datatemp = [{}];
+        for (let i = 0; i < Arraytemp.length; i++) {
+          datatemp[i] = {
+            key: `${i + 1}`,
+            Iteration: `${i}`,
+          };
+          for (let j = 0; j < Arraytemp[i].x.length; j++) {
+            datatemp[i] = {
+              ...datatemp[i],
+              ["x" + (j + 1)]: Arraytemp[i].x[j][0],
+            };
+          }
+        }
+        // console.log(datatemp);
+        // console.log(columntemp);
+        setColumndata(columntemp);
+        setdataSource(datatemp);
       }
-      console.log(datatemp);
-      // console.log(columntemp);
-      setColumndata(columntemp);
-      setdataSource(datatemp);
     }
   }, [arrayA, arrayB, arrayX]);
 
   async function cal() {
+    await setSh([]);
+    await setTet([]);
+    await setColumndata([]);
+    await setdataSource([]);
+
     let tempcol = [];
     for (let i = 0; i < column; i++) {
       let temprow = [];
@@ -123,7 +177,7 @@ function Conju() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: `http://localhost:8080/conjugate`,
+      url: `http://localhost:8080/conjugate?api_key=gwargurainaokayuaquaqulia`,
     })
       .then((response) => {
         return response.data;
@@ -141,6 +195,7 @@ function Conju() {
       await setArrayX([]);
       await setColumndata([]);
       await setdataSource([]);
+      await setSh([]);
       let tempdiv = [];
       for (let i = 0; i < x.col; i++) {
         let tempinput = [];
@@ -197,6 +252,7 @@ function Conju() {
     await setArrayX([]);
     await setColumndata([]);
     await setdataSource([]);
+    await setSh([]);
     let tempdiv = [];
     for (let i = 0; i < column; i++) {
       let tempinput = [];
@@ -273,12 +329,14 @@ function Conju() {
           )}
         </div>
         <div>
+          {sh.length !== 0 && sh}
           {dataSource.length !== 0 && columndata.length !== 0 && (
-            <Table
-              dataSource={dataSource}
-              columns={columndata}
-              pagination={false}
-            ></Table>
+            <div>
+              <Table dataSource={dataSource} columns={columndata}></Table>
+              <Card title="B" bordered={false} style={{ width: 300 }}>
+                {tet}
+              </Card>
+            </div>
           )}
         </div>
       </div>

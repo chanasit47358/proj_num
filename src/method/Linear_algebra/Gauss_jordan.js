@@ -54,7 +54,7 @@ function Gaussjordan() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: `http://localhost:8080/gaussjordan`,
+      url: `http://localhost:8080/gaussjordan?api_key=gwargurainaokayuaquaqulia`,
     })
       .then((response) => {
         return response.data;

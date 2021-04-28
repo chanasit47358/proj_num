@@ -66,7 +66,7 @@ function Gausselim() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: `http://localhost:8080/gausselim`,
+      url: `http://localhost:8080/gausselim?api_key=gwargurainaokayuaquaqulia`,
     })
       .then((response) => {
         return response.data;

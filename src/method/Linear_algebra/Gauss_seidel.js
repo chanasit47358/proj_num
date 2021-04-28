@@ -123,7 +123,7 @@ function Gausssei() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: `http://localhost:8080/gaussseidel`,
+      url: `http://localhost:8080/gaussseidel?api_key=gwargurainaokayuaquaqulia`,
     })
       .then((response) => {
         return response.data;

@@ -65,7 +65,7 @@ function Ml() {
   async function example() {
     let x = await axios({
       method: "get",
-      url: "http://localhost:8080/mlr",
+      url: "http://localhost:8080/mlr?api_key=gwargurainaokayuaquaqulia",
     })
       .then((response) => {
         return response.data;
@@ -167,7 +167,7 @@ function Ml() {
   }
   return (
     <react.Fragment>
-      <h1>Polynomial Regression</h1>
+      <h1>Multiple Linear Regression</h1>
       <div
         style={{
           display: "flex",

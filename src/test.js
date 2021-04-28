@@ -19,7 +19,7 @@ export default function Test({ children, input, nm }) {
     console.log(children.type.name);
     let x = await axios({
       method: "get",
-      url: `http://localhost:8080/${nm}`,
+      url: `http://localhost:8080/${nm}?api_key=gwargurainaokayuaquaqulia`,
     })
       .then((response) => {
         // console.log("response: ", response);
@@ -28,7 +28,7 @@ export default function Test({ children, input, nm }) {
       .catch((err) => {
         return undefined;
       });
-
+    // console.log();
     if (x !== undefined) {
       if (Object.keys(x).length === 3) {
         await setxL(x.x0);
